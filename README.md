@@ -69,6 +69,13 @@ ongaerts, D., Rösch, D., & van Dijk, M. (2025). Cross-Sectional Identification 
 
 # 回測結果
 
+未扣成本
+
+![result](https://meee.com.tw/A953DJ5.png)
+
+已扣成本(58bps)
+
+![result](https://meee.com.tw/wXRv9bP.png)
 
 # 同事+主管們的建議/修正方向
 
