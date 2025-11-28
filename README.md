@@ -113,7 +113,7 @@ ongaerts, D., Rösch, D., & van Dijk, M. (2025). Cross-Sectional Identification 
 
 3.回購比率實務上會這樣算：公司要購買之金額 / 公司帳上現金 -> 看他財務能力有沒有到，因為回購有財務指標要求
 
-
+![result](https://meee.com.tw/ufGOl2D.png)
 
 
 
