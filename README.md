@@ -1,17 +1,17 @@
 # event_trade
 以資訊指標預測法說會所帶來的超額報酬，以資訊指標作為濾網篩選交易標的
 
-#文獻回顧
+# 文獻回顧
 ongaerts, D., Rösch, D., & van Dijk, M. (2025). Cross-Sectional Identification of Private Information. The Review of Asset Pricing Studies, raaf010.
 
 作者以內部人交易與併購作為事件日，發現OIB*Lambda確實能捕捉到informed trading，且相較於過去傳統PIN、ITI等資訊指標更好計算
 
-#策略發想
+# 策略發想
 以法說會為事件日，並假設在法說會前已有 informed trader 知道法說會是否符合市場預期，提前布局。
 
 根據 ongaerts, D., Rösch, D., & van Dijk, M. (2025) 的研究，OIB*Lambda為資訊指標是否能在法說會前預測法說會帶來的超額報酬？先知道法說會是好or法會？
 
-#DATA與指標
+# DATA與指標
 
 1.投資標的：台灣上市公司
 
@@ -27,27 +27,28 @@ ongaerts, D., Rösch, D., & van Dijk, M. (2025). Cross-Sectional Identification 
 
 7.成本：0.1425%  (buy)、0.4425% (sell)
 
-![result](https://meee.com.tw/um4mnky)
+![result](https://meee.com.tw/um4mnky.png)
 
-#回歸檢定
+# 回歸檢定
 
-![result](https://meee.com.tw/hqBDCPU)
+![result](https://meee.com.tw/hqBDCPU.png)
 
-![result](https://meee.com.tw/hwJ8mAk)
+![result](https://meee.com.tw/hwJ8mAk.png)
 
-![result](https://meee.com.tw/yQhY8wd)
+![result](https://meee.com.tw/yQhY8wd.png)
 
-![result](https://meee.com.tw/v7ufdNd)
+![result](https://meee.com.tw/v7ufdNd.png)
 
-#因子檢定－五爪圖分析
+# 因子檢定－五爪圖分析
 
 (1) t-1 _11:00～11:30的資訊指標 < 0 (不是指沒資訊，而是指賣壓強且價格衝擊力大）並根據t= 0當日 9:00～9:30資訊指標(all sample)分五組
 
 (2) 累積CAR：假設每一筆交易總報酬率為CAR[0,+2]，逐筆累積
 
-![result](https://meee.com.tw/DHVLLdC)
+![result](https://meee.com.tw/DHVLLdC.png)
 
-#簡單回測
+# 簡單回測
+
 法說會公告規定：至遲應於召開日前一日或參加日前一日公告其時間、地點
 
 以下回測皆使用tick data
@@ -56,7 +57,7 @@ ongaerts, D., Rösch, D., & van Dijk, M. (2025). Cross-Sectional Identification 
 
 每一天資金投入：$1,000,000，若當天有數檔股票交易則以等權方式分配資金
 
-#交易邏輯
+# 交易邏輯
 
 (1) 第一層濾網：每天收盤回測隔天要開法說會的股票，篩選其當日11:00~11:30資訊指標 < 0的股票作為隔天(t =0)的觀察股票
 
@@ -65,6 +66,53 @@ ongaerts, D., Rösch, D., & van Dijk, M. (2025). Cross-Sectional Identification 
 (3) 進場時間與價格：t=0的9:35:00～9:35:59進場，以這段區間的平均成交價作為進場價
 
 (4) 出場時間與價格：t+2(交易日)的10:00:00～10:00:59出場，以這段區間的平均成交價作為出場價
+
+# 回測結果
+
+
+# 同事+主管們的建議/修正方向
+
+1.若事件日當天9:00~9:30漲 7% or 8%的股票就從股池剔除，有可能漲停掛不到
+
+2.成交量大小，若在我們desk至少要$3000萬的日成交量，有可能你就是主要驅動價格的白痴，所以假設只買6檔，一檔也500萬，還OK
+
+3.要考慮其法說會是正規法說會或券商邀約的，通常正規法說會比較會影響股價，券商邀約的小型法說maybe只會影響小型股(法說會有很多種，要去挑)
+
+4.目前策略是考慮法說會發起日，應該要考慮到法說會公告日 or 其他事件公告(要去公開資訊觀測站找)，還有重大事件...
+
+5.增加選股濾網：
+
+  (1) 妖股刪掉，短期漲太多的。因為我們要找本來平平，後來超乎預期的股票(surprise!!)
+
+  (2) 可以拿月營收成長當作選股因子之一，月營收成長不錯代表他基本上不會多糟糕，甚至法說會開的財報會有surprise
+
+6.若我的策略是要賭法說會帶來的短期波動，那我要設停損點，有跌就趕進賣掉
+
+7.實務上權重調整不用用到很麻煩，例如把某position慢慢調降，賣掉有現金後再去買其他個股（每日再平衡會有零股買賣跟成本問題）
+
+8.我法說會的持有天數是否要拉長，然後要建構投組（績效看來還是要用超額報酬，這樣才有兩隻腳，long stock, short future）
+
+9.不要以事件選股，可以用其他因子選股並加入這個資訊指標，再建構投組，每週再平衡之類的
+
+10. 11:00～11:30雖然顯著，但實務上真的比較賺錢嗎?還是他是統計出來的結果?
+
+11. 9:00~9:30可能會吃到noise所帶來的報酬，可以當作開盤的指標，盤中成交量沒有開盤跟尾盤那麼大，可以把盤中時段變大 (10:00～12:00)
+
+
+# TMBA開會建議
+
+1. 跑OIB*Lambda daily的指標，若能作為因子好像也不錯。
+
+2. 若把CAR拉長，不要只看事件後的溢酬?或許在開法說會前就有超額溢酬了。例如CAR[-2.+2]...
+
+# 庫藏股相關策略建議
+
+1. 庫藏股集中實施的問題，例如通常都11月~12月會進行庫藏股買回。且庫藏股買回本來就是公司看不下去要出手了XD 所以基本上都在股價低點
+
+2.可以把庫藏股當作大盤水位，因為會集中護盤，MAYBE可以當作一個反轉訊號！
+
+3.回購比率實務上會這樣算：公司要購買之金額 / 公司帳上現金 -> 看他財務能力有沒有到，因為回購有財務指標要求
+
 
 
 
